@@ -1,0 +1,6 @@
+syntax:glob
+
+book.pdf
+*.out
+*.o
+*.s
