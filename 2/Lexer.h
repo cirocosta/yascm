@@ -24,7 +24,7 @@ inline bool is_digit (char c)
 
 inline bool is_letter (char c)
 {
-  return c >= 97 && c <= 122;
+  return (c >= 97 && c <= 122) || (c >= 65 && c <= 90);
 }
 
 inline int char_to_int (char c)

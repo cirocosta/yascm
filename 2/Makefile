@@ -1,4 +1,4 @@
-CPPFLAGS = -Wall -O2 -std=c++11
+CPPFLAGS = -Wall -std=c++11 -g
 CPPC = g++
 D_TESTS = ./test
 

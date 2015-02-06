@@ -66,6 +66,33 @@ Token Lexer::scan ()
       break;
   }
 
+  // COMMENTS
+
+  if (peek == '/') {
+    peek = get_digit();
+
+    if (peek == '/') {
+      do {
+        peek = get_digit();
+      } while (peek != '\n');
+
+      return Token(T_COMMENT);
+    }
+
+    if (peek == '*') {
+      char nextPeek = get_digit();
+      do {
+        peek = nextPeek;
+        nextPeek = get_digit();
+      } while (peek != '*' && nextPeek != '/');
+
+      peek = get_digit();
+      return Token(T_COMMENT);
+    }
+  }
+
+  // NUMBERS
+
   if (is_digit(peek)) {
     int v = 0;
 
@@ -76,6 +103,8 @@ Token Lexer::scan ()
 
     return Num(v);
   }
+
+  //IDS OR RESERVED WORDS
 
   if (is_letter(peek)) {
     string b;

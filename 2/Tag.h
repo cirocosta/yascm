@@ -9,6 +9,8 @@
   #define T_MINUS 261
   #define T_MULTIPLY 262
   #define T_DIVIDE 263
+
+  #define T_COMMENT 998
   #define T_UNDEFINED 999
 
 #endif
