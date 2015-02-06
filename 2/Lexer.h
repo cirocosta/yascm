@@ -9,32 +9,75 @@
  */
 
 #ifndef LEXER_H
-  #define LEXER_H
+#define LEXER_H
 
-  #include "Tag.h"
-  #include <iostream>
+#include "Tag.h"
+#include <unordered_map>
+#include <iostream>
 
-  class Token {
-  public:
-    int tag;
-    Token(int t);
-  };
+namespace l_utils {
 
-  class Num : public Token {
-  public:
-    int value;
-    Num (int v);
-  };
+inline bool is_digit (char c)
+{
+  return c >= 48 && c <= 57;
+}
 
-  /**
-   * Used both for reserved words and
-   * identifiers. It expects a lexeme and also a
-   * corresponding integer that represents the
-   * correct tag.
-   */
-  class Word : public Token {
-  public:
-    std::string lexeme;
-    Word (int t, std::string s);
-  };
+inline bool is_letter (char c)
+{
+  return c >= 97 && c <= 122;
+}
+
+inline int char_to_int (char c)
+{
+  return (int)c - 48;
+}
+
+} // utils namespace
+
+class Token {
+public:
+  int tag;
+  Token(int t);
+};
+
+class Num : public Token {
+public:
+  int value;
+  Num (int v);
+};
+
+/**
+ * Used both for reserved words and
+ * identifiers. It expects a lexeme and also a
+ * corresponding integer that represents the
+ * correct tag.
+ */
+class Word : public Token {
+public:
+  std::string lexeme;
+  Word ();
+  Word (int t, std::string s);
+};
+
+/**
+ * Scans a given input generating tokens from
+ * it through its scan method.
+ */
+class Lexer {
+public:
+  Lexer(char *src);
+
+  int line;
+  void reserve (Word w);
+  Token scan();
+  char get_digit();
+
+private:
+  char* source;
+  int index;
+  char peek;
+  std::unordered_map<std::string, Word> words;
+};
+
 #endif
+// end lexer_h

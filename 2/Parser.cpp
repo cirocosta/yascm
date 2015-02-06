@@ -34,10 +34,7 @@
 
 using namespace std;
 
-Parser::Parser (char* src, int src_length) {
-  source = src;
-  index = 0;
-}
+Parser::Parser (char* src) : source{src}, index{0} {}
 
 void Parser::match (int t) {
   if (lookahead == t)

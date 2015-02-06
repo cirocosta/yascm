@@ -27,8 +27,8 @@ $(D_TESTS)/test-Lexer.out: $(D_TESTS)/test-Lexer.cpp Lexer.o
 .PHONY: clean test
 
 test: $(D_TESTS)/test-Parser.out $(D_TESTS)/test-Lexer.out
-	$(D_TESTS)/test-Parser.out
-	$(D_TESTS)/test-Lexer.out
+	@$(D_TESTS)/test-Parser.out
+	@$(D_TESTS)/test-Lexer.out
 
 clean:
 	find . -name "*.out" -delete

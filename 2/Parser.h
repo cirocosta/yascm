@@ -3,7 +3,7 @@
 
   class Parser {
   public:
-    Parser (char* src, int src_length);
+    Parser (char* src);
     std::string parse();
   private:
     char* source;
