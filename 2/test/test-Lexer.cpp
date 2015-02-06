@@ -11,7 +11,7 @@ void test_1 ()
   Lexer lex ((char *)"heuhe");
   Token t = lex.scan();
 
-  assert(t.tag == T_ID);
+  assert(t.tag == Tag::Id);
 }
 
 // multiple ids
@@ -23,7 +23,7 @@ void test_2 ()
   };
 
   for (int i = 0; i < 3; i++)
-    assert(t[i].tag == T_ID);
+    assert(t[i].tag == Tag::Id);
 }
 
 // simple digit
@@ -32,7 +32,7 @@ void test_3 ()
   Lexer lex ((char *)"222");
   Token t = lex.scan();
 
-  assert(t.tag == T_NUM);
+  assert(t.tag == Tag::Num);
   // assert(t.value == 222);
 }
 
@@ -41,7 +41,7 @@ void test_4 ()
   Lexer lex ((char *)"true");
   Token t = lex.scan();
 
-  assert(t.tag == T_TRUE);
+  assert(t.tag == Tag::True);
 }
 
 // multiple tokens
@@ -52,12 +52,12 @@ void test_5 ()
     lex.scan(), lex.scan(), lex.scan(), lex.scan()
   };
 
-  assert(t[0].tag == T_ID);
-  assert(t[1].tag == T_FALSE);
+  assert(t[0].tag == Tag::Id);
+  assert(t[1].tag == Tag::False);
   // would be great to handle the following:
-  // assert(t[2].tag == T_NUM && t[2].value == 212);
-  assert(t[2].tag == T_NUM);
-  assert(t[3].tag == T_ID);
+  // assert(t[2].tag == Tag::Num && t[2].value == 212);
+  assert(t[2].tag == Tag::Num);
+  assert(t[3].tag == Tag::Id);
 }
 
 // simple inline comment
@@ -66,7 +66,7 @@ void test_6 ()
   Lexer lex ((char *)"//this is a coommentary\n");
   Token t = lex.scan();
 
-  assert(t.tag == T_COMMENT);
+  assert(t.tag == Tag::Comment);
 }
 
 /**
@@ -79,9 +79,9 @@ void test_7 ()
     lex.scan(), lex.scan(), lex.scan()
   };
 
-  assert(t[0].tag == T_COMMENT);
-  assert(t[1].tag == T_ID);
-  assert(t[2].tag == T_TRUE);
+  assert(t[0].tag == Tag::Comment);
+  assert(t[1].tag == Tag::Id);
+  assert(t[2].tag == Tag::True);
 }
 
 /**
@@ -92,7 +92,7 @@ void test_8 ()
   Lexer lex ((char *)"/*comments\ntoken true*/");
   Token t = lex.scan();
 
-  assert(t.tag == T_COMMENT);
+  assert(t.tag == Tag::Comment);
 }
 
 /**
@@ -100,13 +100,13 @@ void test_8 ()
  */
 void test_9 ()
 {
-  Lexer lex ((char *)"/*comments\ntoken true*/\t\tfalse");
+  Lexer lex ((char *)"/*comments\ntoken true*/\tfalse");
   Token t[] = {
     lex.scan(), lex.scan()
   };
 
-  assert(t[0].tag == T_COMMENT);
-  assert(t[1].tag == T_FALSE);
+  assert(t[0].tag == Tag::Comment);
+  assert(t[1].tag == Tag::False);
 }
 
 int main(int argc, char const *argv[])

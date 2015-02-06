@@ -1,4 +1,5 @@
 #include "Lexer.h"
+#include "Tag.h"
 
 using namespace std;
 using namespace l_utils;
@@ -7,25 +8,25 @@ using namespace l_utils;
  * Creates Token objects that have a particular
  * tag(param) attached to it
  */
-Token::Token (int t) : tag{t} {}
+Token::Token (Tag t) : tag{t} {}
 /**
  * Creates a specialized Token for number, setting an
  * integer value to it.
  */
-Num::Num (int v) : Token{T_NUM}, value{v} {}
+Num::Num (int v) : Token(Tag::Num), value(v) {}
 
 
 /**
  * Empty constructor for Word
  */
-Word::Word () : Token{T_UNDEFINED} {}
+Word::Word () : Token{Tag::Undefined} {}
 
 /**
  * Creates a specialize Token for words, setting
  * an String value to it and also allowing more
  * than one type of tags.
  */
-Word::Word (int t, string s) : Token{t}, lexeme{s} {}
+Word::Word (Tag t, string s) : Token{t}, lexeme{s} {}
 
 /**
  * Lexer encapsulates reserved words and
@@ -34,8 +35,8 @@ Word::Word (int t, string s) : Token{t}, lexeme{s} {}
  */
 Lexer::Lexer (char *src)
   : line(1), source(src), index(0), peek(' ') {
-  words["true"] = Word(T_TRUE, "true");
-  words["false"] = Word(T_FALSE, "false");
+  words["true"] = Word(Tag::True, "true");
+  words["false"] = Word(Tag::False, "false");
 }
 
 char Lexer::get_digit ()
@@ -76,7 +77,7 @@ Token Lexer::scan ()
         peek = get_digit();
       } while (peek != '\n');
 
-      return Token(T_COMMENT);
+      return Token(Tag::Comment);
     }
 
     if (peek == '*') {
@@ -87,7 +88,7 @@ Token Lexer::scan ()
       } while (peek != '*' && nextPeek != '/');
 
       peek = get_digit();
-      return Token(T_COMMENT);
+      return Token(Tag::Comment);
     }
   }
 
@@ -117,13 +118,13 @@ Token Lexer::scan ()
     if (words.count(b))
       return words[b];
 
-    Word w (T_ID, b);
+    Word w (Tag::Id, b);
     words[b] = w;
 
     return w;
   }
 
   cerr << "Lexer::scan - Unexpected End" << endl;
-  return Token(T_UNDEFINED);
+  return Token(Tag::Undefined);
 }
 

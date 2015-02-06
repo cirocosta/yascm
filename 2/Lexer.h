@@ -36,8 +36,8 @@ inline int char_to_int (char c)
 
 class Token {
 public:
-  int tag;
-  Token(int t);
+  Tag tag;
+  Token(Tag t);
 };
 
 class Num : public Token {
@@ -56,7 +56,7 @@ class Word : public Token {
 public:
   std::string lexeme;
   Word ();
-  Word (int t, std::string s);
+  Word (Tag t, std::string s);
 };
 
 /**
