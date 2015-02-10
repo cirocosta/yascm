@@ -15,7 +15,6 @@ Token::Token (Tag t) : tag{t} {}
  */
 Num::Num (int v) : Token(Tag::Num), value(v) {}
 
-
 /**
  * Empty constructor for Word
  */

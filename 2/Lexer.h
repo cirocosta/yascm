@@ -34,6 +34,9 @@ inline int char_to_int (char c)
 
 } // utils namespace
 
+// TODO: implement virtual method for obtaining
+// fields (allow base class pointer polyformism).
+
 class Token {
 public:
   Tag tag;
