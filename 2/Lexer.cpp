@@ -57,6 +57,10 @@ char Lexer::get_digit ()
 
 Token Lexer::scan ()
 {
+  ////////////////////
+  // SCANNING PHASE //
+  ////////////////////
+
   for (;;peek = get_digit()) {
     if (peek == ' ' || peek == '\t')
       continue;
@@ -90,6 +94,10 @@ Token Lexer::scan ()
       return Token(Tag::Comment);
     }
   }
+
+  //////////////////////////
+  // ACTUAL TOCKENIZATION //
+  //////////////////////////
 
   // NUMBERS
 

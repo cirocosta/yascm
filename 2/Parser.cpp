@@ -1,13 +1,21 @@
 /**
  * parses:
  *
- * expr -> expr + term {print('+')}
- *       | expr - term {print('-')}
- *       | eps
- * term -> 0 {print ('0')}
- *       | 1   ...
- *         ..
- *       | 9 {print ('9')}
+ * expr  -> expr + term     {print('+')}
+ *       |  expr - term     {print('-')}
+ *       |  term
+ *
+ * term  -> term * factor   {print('*')}
+ *       |  term / factor   {print('/')}
+ *       |  factor
+ *
+ * factor-> '(' expr ')'
+ *       |  num             {print(num.value)}
+ *       |  id              {print(id.lexeme)}
+ *
+ * id    ->
+ *
+ * num   -> 0 | 1 | ... | 9 {print()}
  *
  * Using:
  *
@@ -21,11 +29,14 @@
  * expr -> term rest
  * rest -> + term {print('+')} rest
  *       | - term {print('-')} rest
+ *       | '-' expr
  *       | eps
  * term -> 0 {print ('0')}
  *       | 1   ...
  *         ..
  *       | 9 {print ('9')}
+ *       | '('expr')'
+ *       | '-' term {print('-')}
  */
 
 
@@ -34,13 +45,12 @@
 
 using namespace std;
 
-Parser::Parser (char* src) : source{src}, index{0} {}
-
 void Parser::match (int t) {
   if (lookahead == t)
-    lookahead = source[++index];
+    while (lookahead = source[++index], lookahead == ' ')
+      continue;
   else
-    fprintf(stderr, "Parser::match: Syntax Error.\n");
+    cerr << "Parser::match: Syntax Error." << endl;
 }
 
 void Parser::expr() {
@@ -84,8 +94,21 @@ void Parser::term () {
       match(lookahead);
     break;
 
+    case '-':
+      match('-');
+      term();
+      result += '-';
+    break;
+
+    case '(':
+      match('(');
+      expr();
+      match(')');
+    break;
+
     default:
-      fprintf(stderr, "%s\n", "Parser::term: Syntax Error.");
+      cerr << "Parser::term: Syntax Error." << endl;
+      cerr << "not expected: " << (char)lookahead << endl;
   }
 }
 
