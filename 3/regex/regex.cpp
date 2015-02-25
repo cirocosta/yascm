@@ -177,6 +177,14 @@ void Regex::_b1 ()
   if (lookahead == '*') {
     _match('*');
     cout << "*";
+
+    Nfa n1 = nfa_stack.front();
+    nfa_stack.pop_front();
+
+    int from = counter++;
+    int to = counter++;
+    nfa_stack.push_front(r_closure(from, n1, to));
+
     _b1();
   }
 }
