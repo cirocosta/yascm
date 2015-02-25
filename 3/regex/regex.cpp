@@ -41,9 +41,6 @@ string merge_to_unique_str (string str1, string str2)
  * nonterminal)
  */
 
-Regex::Regex () {}
-
-
 Nfa Regex::r_single (int init, int final, char input)
 {
   nfa_tmap transitions = {
@@ -97,4 +94,129 @@ Nfa Regex::r_closure (int i, Nfa a, int f)
   assign(transitions, a.transitions);
 
   return Nfa (i, transitions, s_states {f}, a.alphabet);
+}
+
+
+/////////////
+// PARSING //
+/////////////
+
+void Regex::_match (char t) {
+  if (lookahead == t)
+    while (lookahead = source[++index], lookahead == ' ')
+      continue;
+  else
+    cerr << "Parser::match: Syntax Error." << endl;
+}
+
+void Regex::_start ()
+{
+  _re();
+}
+
+void Regex::_re ()
+{
+  _c();
+  _re1();
+}
+void Regex::_re1 ()
+{
+  if (lookahead == '|') {
+    _match('|');
+    _c();
+    cout << "|";
+    int from = counter++;
+    int to = counter++;
+
+    Nfa n1 = nfa_stack.front();
+    nfa_stack.pop_front();
+    Nfa n2 = nfa_stack.front();
+    nfa_stack.pop_front();
+    nfa_stack.push_front(r_alternate(from, n2, n1,to));
+
+    _re1();
+  }
+}
+void Regex::_c ()
+{
+  _b();
+  _c1();
+}
+void Regex::_c1 ()
+{
+  if (lookahead == '.') {
+    _match('.');
+    _b();
+
+    cout << ".";
+
+    Nfa n2 = nfa_stack.front();
+    nfa_stack.pop_front();
+    Nfa n1 = nfa_stack.front();
+    nfa_stack.pop_front();
+
+    nfa_stack.push_front(r_concatenate(n1, n2));
+
+    _c1();
+  }
+}
+void Regex::_b ()
+{
+  if (lookahead == '(') {
+    _match('(');
+    _re();
+    _match(')');
+    _b1();
+  } else {
+    _sim();
+    _b1();
+  }
+}
+void Regex::_b1 ()
+{
+  if (lookahead == '*') {
+    _match('*');
+    cout << "*";
+    _b1();
+  }
+}
+void Regex::_sim ()
+{
+  char la = lookahead;
+
+  if (is_digit(lookahead) || is_letter(lookahead)) {
+    _match(lookahead);
+    cout << la;
+    int from = counter++;
+    int to = counter++;
+    nfa_stack.push_front(r_single(from, to, la));
+  }
+}
+
+void Regex::compile ()
+{
+  lookahead = source[index];
+
+  _start();
+
+  final_nfa = nfa_stack.front();
+  nfa_stack.pop_front();
+
+  final_nfa.convert();
+  compiled = true;
+}
+
+bool Regex::match (string input)
+{
+
+  if (!compiled) {
+    cout << "i2p :: (" << source << ") => ";
+    compile();
+    cout << endl;
+  }
+
+
+  final_nfa.show_nfa();
+
+  return final_nfa.validate(input);
 }

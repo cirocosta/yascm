@@ -51,6 +51,7 @@ test: $(D_REGEX_TESTS)/test-dfa.out $(D_REGEX_TESTS)/test-nfa.out $(D_REGEX_TEST
 	@$(D_REGEX_TESTS)/test-nfa.out
 	@$(D_REGEX_TESTS)/test-regex.out
 
+
 clean:
 	find . -name "*.out" -delete
 	find . -name "*.o" -delete

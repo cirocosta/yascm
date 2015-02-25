@@ -86,15 +86,68 @@ void test_compose_1 ()
   assert(n7.validate("aba"));
 }
 
+void test_match_1 ()
+{
+  Regex regex ("a");
+
+  assert(regex.match("a"));
+  assert(!regex.match("aa"));
+  assert(!regex.match("b"));
+}
+
+void test_match_2 ()
+{
+  Regex regex ("a.b");
+
+  assert(regex.match("ab"));
+  // assert(!regex.match("aa"));
+  // assert(!regex.match("b"));
+}
+
+void test_match_3 ()
+{
+  Regex regex ("a.b.a");
+
+  assert(regex.match("aba"));
+  assert(!regex.match("aaa"));
+  assert(!regex.match("bbb"));
+  assert(!regex.match("bab"));
+  assert(!regex.match("a"));
+}
+
+void test_match_4 ()
+{
+  Regex regex ("a.(a|b).a");
+
+  assert(regex.match("aaa"));
+  assert(regex.match("aba"));
+  assert(!regex.match("bbb"));
+}
+
+void test_match_5 ()
+{
+  Regex regex ("a*");
+
+  assert(regex.match("a"));
+  assert(regex.match("aaa"));
+  assert(!regex.match("b"));
+}
+
+
 int main(int argc, char const *argv[])
 {
+  // test_r_single();
+  // test_alternate();
+  // test_concatenate();
+  // test_closure();
 
-  test_r_single();
-  test_alternate();
-  test_concatenate();
-  test_closure();
+  // test_compose_1();
 
-  test_compose_1();
+  // test_match_1();
+  // test_match_2();
+  // test_match_3();
+  // test_match_4();
+  test_match_5();
 
   return 0;
 }

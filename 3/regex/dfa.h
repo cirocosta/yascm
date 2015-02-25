@@ -28,6 +28,10 @@ typedef set<int> s_states;
  */
 class Dfa {
 public:
+  int initial_state;
+  dfa_tmap transitions;
+  set<int> final_states;
+
   Dfa () {};
   Dfa (int start) : initial_state(start) {}
   Dfa (int start, dfa_tmap trans,
@@ -59,20 +63,6 @@ public:
   // TODO: implement DFA state minimization using
   // the quotient construction
   // void minimize();
-private:
-  /**
-   * Initial state of the DFA
-   */
-  int initial_state;
-  /**
-   * Transition table. It maps:
-   * (State, Event) -> State
-   */
-  dfa_tmap transitions;
-  /**
-   * Set of final states
-   */
-  set<int> final_states;
 };
 
 #endif

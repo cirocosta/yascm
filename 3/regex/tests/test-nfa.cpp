@@ -213,6 +213,23 @@ void test_convert_2 ()
 }
 
 /**
+ * When trying to validate, should throw an
+ * error if no previously compiled DFA is found
+ * for the NFA.
+ */
+void test_validate_1 ()
+{
+  nfa_tmap transitions = {
+    {make_pair(1, 'a'), {2}},
+    {make_pair(2, 'b'), {3}},
+  };
+  Nfa nfa (1, transitions, s_states {3}, "ab");
+
+  assert(nfa.validate("ab"));
+  assert(!nfa.validate("aa"));
+}
+
+/**
  * Validate a kleene-star over 'a' (i.e.: a*)
  */
 void  test_validate_2 ()
@@ -233,37 +250,38 @@ void  test_validate_2 ()
   assert(!nfa.validate("b"));
 }
 
-/**
- * When trying to validate, should throw an
- * error if no previously compiled DFA is found
- * for the NFA.
- */
-void test_validate_1 ()
+void test_validate_3 ()
 {
-  nfa_tmap transitions = {
-    {make_pair(1, 'a'), {2}},
-    {make_pair(2, 'b'), {3}},
+  nfa_tmap transitions =
+  {
+    {make_pair(0, 'a'), s_states {2}},
+    {make_pair(2, 'b'), s_states {3}},
   };
-  Nfa nfa (1, transitions, s_states {3}, "ab");
+
+  Nfa nfa (0, transitions, s_states {3}, "ab");
 
   assert(nfa.validate("ab"));
+  assert(!nfa.validate("a"));
+  assert(!nfa.validate("b"));
   assert(!nfa.validate("aa"));
+  assert(!nfa.validate("bb"));
 }
 
 int main(int argc, char const *argv[])
 {
 
-  // test_closure_1();
+  test_closure_1();
   test_closure_2();
-  // test_closure_3();
+  test_closure_3();
 
-  // test_move_1();
+  test_move_1();
 
-  // test_convert_1();
-  // test_convert_2();
+  test_convert_1();
+  test_convert_2();
 
-  // test_validate_1();
-  // test_validate_2();
+  test_validate_1();
+  test_validate_2();
+  test_validate_3();
 
   return 0;
 }

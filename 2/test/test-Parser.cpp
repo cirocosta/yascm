@@ -30,6 +30,8 @@ int main(int argc, char const *argv[])
   assert((char *)"1+1", "11+", "simple addition");
   assert((char *)"2+3+4", "23+4+", "simple addition");
   assert((char *)"(1+1)", "11+", "simple addition with brackets");
+  assert((char *)"((1+1))", "11+", "simple addition with brackets");
+  assert((char *)"((1+1)+1)", "11+1+", "simple addition with brackets");
   assert((char *)"1 + 1", "11+", "simple addition with whitechars");
   assert((char *)"(1 + 1)", "11+", "simple addition with brackets and white chars");
   assert((char *)"-1", "1-", "unary minus");

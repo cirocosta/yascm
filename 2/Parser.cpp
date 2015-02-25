@@ -29,7 +29,6 @@
  * expr -> term rest
  * rest -> + term {print('+')} rest
  *       | - term {print('-')} rest
- *       | '-' expr
  *       | eps
  * term -> 0 {print ('0')}
  *       | 1   ...
@@ -90,8 +89,8 @@ void Parser::term () {
     case '7':
     case '8':
     case '9':
-      result+= (char)la;
       match(lookahead);
+      result+= (char)la;
     break;
 
     case '-':

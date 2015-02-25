@@ -85,6 +85,8 @@ bool Nfa::has_final_state (s_states& states)
 
 bool Nfa::validate (string input)
 {
+  // compiled_dfa.show_dfa();
+
   if (!compiled)
     convert();
 
@@ -142,6 +144,7 @@ Dfa Nfa::convert ()
   }
 
   compiled_dfa = Dfa (1, dfa_transitions, final_states);
+  compiled = true;
 
   return compiled_dfa;
 }

@@ -34,6 +34,8 @@ public:
   Dfa compiled_dfa;
   bool compiled;
 
+  // default constructor
+  Nfa () {}
 
   // without alphabet
   Nfa (int s, nfa_tmap t, s_states f) :

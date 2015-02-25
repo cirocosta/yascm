@@ -2,6 +2,7 @@
 #define REGEX_H
 
 #include <string>
+#include <forward_list>
 #include "common.h"
 #include "nfa.h"
 
@@ -28,10 +29,19 @@ using namespace std;
  */
 
 class Regex {
-  string input;
+  string source;
+  char lookahead;
+  int index = 0;
+
+  bool compiled = false;
+
+  forward_list<Nfa> nfa_stack;
+  int counter = 0;
 public:
-  Regex ();
-  Regex (string i) : input(i) {}
+  Nfa final_nfa;
+
+  Regex () {}
+  Regex (string i) : source(i) {}
 
   /**
    * => i->--a--->f*
@@ -60,6 +70,28 @@ public:
    * Kleene-star over a given Nfa.
    */
   Nfa r_closure (int i, Nfa a, int f);
+
+  void _match (char t);
+  void _start();
+  void _re ();
+  void _re1 ();
+  void _c ();
+  void _c1 ();
+  void _b ();
+  void _b1 ();
+  void _sim ();
+
+  /**
+   * Compiles a given regex string
+   */
+  void compile();
+
+  /**
+   * [match  description]
+   * @param  input [description]
+   * @return       [description]
+   */
+  bool match (string input);
 };
 
 #endif
