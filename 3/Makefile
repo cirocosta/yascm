@@ -1,5 +1,6 @@
-CPPFLAGS = -Wall -std=c++11 -g
+CPPFLAGS = -Wall -std=c++11 -g -O0
 CPPC = g++
+D_TESTS = ./tests
 D_REGEX = ./regex
 D_REGEX_TESTS = $(D_REGEX)/tests
 
@@ -41,13 +42,18 @@ $(D_REGEX_TESTS)/test-common.out: $(D_REGEX_TESTS)/test-common.cpp
 	@echo "Preparing test-common.out"
 	@$(CPPC) $(CPPFLAGS) -o $@ $^
 
+$(D_TESTS)/test-MapBySet.out: $(D_TESTS)/test-MapBySet.cpp
+	@echo "Preparing test-MapBySet.out"
+	@$(CPPC) $(CPPFLAGS) -o $@ $^
+
 
 .PHONY: clean test
 
-test: $(D_REGEX_TESTS)/test-dfa.out $(D_REGEX_TESTS)/test-nfa.out $(D_REGEX_TESTS)/test-regex.out $(D_REGEX_TESTS)/test-common.out
-	@echo "Testing: test-common, test-dfa, test-nfa, test-regex"
+test: $(D_REGEX_TESTS)/test-dfa.out $(D_REGEX_TESTS)/test-nfa.out $(D_REGEX_TESTS)/test-regex.out $(D_REGEX_TESTS)/test-common.out $(D_TESTS)/test-MapBySet.out
+	@echo "Testing: test-common, test-dfa, test-MapBySet, test-nfa, test-regex"
 	@$(D_REGEX_TESTS)/test-common.out
 	@$(D_REGEX_TESTS)/test-dfa.out
+	@$(D_TESTS)/test-MapBySet.out
 	@$(D_REGEX_TESTS)/test-nfa.out
 	@$(D_REGEX_TESTS)/test-regex.out
 

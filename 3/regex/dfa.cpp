@@ -1,7 +1,4 @@
-#include <string>
-#include <utility>
 #include "dfa.h"
-#include <iostream>
 
 using namespace std;
 

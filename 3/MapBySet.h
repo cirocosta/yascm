@@ -9,30 +9,22 @@ const int PRIME_B = 76963;
 
 using namespace std;
 
-unsigned hash_str(const char* s)
-{
-   unsigned h = 31;
-   while (*s)
-     h = (h * PRIME_A) ^ (s[0] * PRIME_B), s++;
-
-   return h;
-}
-
-char * get_str(set<int> s)
+unsigned get_set_hash (set<int> s)
 {
   char * res = new char[s.size()];
   set<int>::iterator it = s.begin();
   int count = 0;
+  unsigned h = 31;
 
   while (it != s.end())
     res[count++] = *it++;
 
-  return res;
-}
+  while (count--)
+    h = (h * PRIME_A) ^ (res[0] * PRIME_B);
 
-unsigned get_set_hash (set<int> s)
-{
-  return hash_str(get_str(s));
+  delete[] res;
+
+  return h;
 }
 
 struct KeyHash {

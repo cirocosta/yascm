@@ -136,17 +136,17 @@ void test_match_5 ()
 
 int main(int argc, char const *argv[])
 {
-  // test_r_single();
-  // test_alternate();
-  // test_concatenate();
-  // test_closure();
+  test_r_single();
+  test_alternate();
+  test_concatenate();
+  test_closure();
 
-  // test_compose_1();
+  test_compose_1();
 
-  // test_match_1();
-  // test_match_2();
-  // test_match_3();
-  // test_match_4();
+  test_match_1();
+  test_match_2();
+  test_match_3();
+  test_match_4();
   test_match_5();
 
   return 0;
